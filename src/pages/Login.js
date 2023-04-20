@@ -203,7 +203,11 @@ const responseGoogleError = (error) => {
 
 
       </form>
-  
+      <GoogleLogin
+        clientId="261980996205-nm2bsterdg3vqdp00qqaan8mho4tvl5t.apps.googleusercontent.com"
+        onSuccess={handleGoogleSignIn}
+        onFailure={handleGoogleSignIn}
+      />
            
 
 
