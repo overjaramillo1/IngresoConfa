@@ -126,15 +126,16 @@ export default function Validacion() {
         guardarfotos3: "si",
         tipoimg: "b64",
         imagenb64Ourl: imgTake,
-        rutas3guardar: "eventoconfa/ingresoconfa",// 890806490-adjuntos-aplicaciones/ingresoconfa/identificacionFacial_PD_Registrar_Validacion_B64oUrl
+        rutas3guardar: "ingresoconfa/PD_Registrar_Validacion_B64oUrl",// 890806490-adjuntos-aplicaciones/ingresoconfa/identificacionFacial_PD_Registrar_Validacion_B64oUrl
       }),
     };
     fetch(
-      "https://csb8pwoxmd.execute-api.us-east-1.amazonaws.com/py",
+      "https://4uw28yccb8.execute-api.us-east-1.amazonaws.com/PD/registrar_validacion_b64ourl",
       requestOptions
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log("-data---" + JSON.stringify(data));
         if (data.message === "OK") {
           setShowContent(false);
           setResRegistar(data.respuesta);

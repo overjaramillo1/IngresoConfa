@@ -8,6 +8,9 @@ import Signup from "./pages/Signup";
 import Login from './pages/Login';
 import IngresoConfa from "./pages/IngresoConfa";
 import CargarArchivo from "./pages/CargarArchivo";
+import LoginG from './pages/LoginG';
+
+
      //  <Route path="/IngresoConfa" component={IngresoConfa}   />
 export default function App() {
   return (
@@ -20,6 +23,7 @@ export default function App() {
          <Route path="/signup"  component={Signup} />
          <Route path="/CargarArchivo" component={CargarArchivo} />
           <ProtectedRoute path="/IngresoConfa" component={IngresoConfa} />
+          <Route path="/LoginG" component={LoginG} />
           
         </Switch>
       </Router>

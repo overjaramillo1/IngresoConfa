@@ -10,7 +10,7 @@ import jwtDecode from 'jwt-decode';
 import { GoogleLogin } from 'react-google-login';
 
 
-const Login = () => {
+const LoginG = () => {
 
   const poolData = {
     UserPoolId: 'us-east-1_MQwendKCy',
@@ -203,7 +203,11 @@ const responseGoogleError = (error) => {
 
 
       </form>
-  
+      <GoogleLogin
+        clientId="261980996205-nm2bsterdg3vqdp00qqaan8mho4tvl5t.apps.googleusercontent.com"
+        onSuccess={handleGoogleSignIn}
+        onFailure={handleGoogleSignIn}
+      />
            
 
 
@@ -211,4 +215,4 @@ const responseGoogleError = (error) => {
   );
 };
 
-export default Login;
+export default LoginG;

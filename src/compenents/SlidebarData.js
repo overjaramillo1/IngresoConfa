@@ -31,6 +31,12 @@ export const SidebarData = [
     path: "/CargarArchivo",
     icon: <IoSettingsOutline />,
     cName: "nav-text"
+  },
+  {
+    title: "Login Google",
+    path: "/LoginG",
+    icon: <IoSettingsOutline />,
+    cName: "nav-text"
   }
   
 ];
