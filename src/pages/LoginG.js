@@ -10,209 +10,61 @@ import jwtDecode from 'jwt-decode';
 import { GoogleLogin } from 'react-google-login';
 
 
-const LoginG = () => {
-
-  const poolData = {
-    UserPoolId: 'us-east-1_MQwendKCy',
-    ClientId: '7fh5usiukn07fht43mv3hp35o0'
-  };
-  
- // const authContext = useAuthContext();
-  // const navigate = useNavigate();
-  const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [respuestaLogin, setRespuestaLogin] = useState("");
- // const [authenticated, setAuthenticated] = useState(false);
-
-/*
- useEffect(() => {
-  window.gapi.load("auth2", () => {
-    window.gapi.auth2
-      .init({
-        client_id: "261980996205-m4h16c4eus7auq03haj0v3rrjksqi38c.apps.googleusercontent.com",
-      })
-      .then((auth) => {
-        const currentUser = auth.currentUser.get();
-        if (currentUser) {
-          console.log("Usuario autenticado:", currentUser.getBasicProfile());
-        }
-      });
-  });
-}, []);*/
-
-const options = {
-  scope: 'email profile',
-  prompt: 'select_account'
-};
-
-/*const googleAuth = new GoogleAuth({
-  clientId: '261980996205-hjhh2e8edvs51td1ks19jdgvhui60dh7.apps.googleusercontent.com'
+const userPool = new CognitoUserPool({
+  UserPoolId: 'us-east-1_MQwendKCy',
+  ClientId: '7fh5usiukn07fht43mv3hp35o0'
 });
-const handleGoogleLogin = async () => {
-  try {
-    const response = await googleAuth.signIn();
-    console.log(response);
-  } catch (error) {
-    console.error(error);
-  }
-};*/
-/*
-const handleGoogleLogin = async (response) => {
-  const { tokenId } = response;
-  
-  const authenticationData = {
-    Token: tokenId
-  };*/
- const handleGoogleLogin = (response) => {
- // window.gapi.auth2.getAuthInstance().signIn().then((googleUser) => {
-  //  console.log("Usuario autenticado:", googleUser.getBasicProfile());
- // });
 
- const { tokenId } = response;
-  
-  const authenticationData = {
-    Token: tokenId
+const signInWithGoogle = (googleUser) => {
+  console.log('signInWithGoogle :>> ', googleUser);
+  // Autenticación con Google exitosa, se obtiene el token de acceso.
+  const idToken = googleUser.getAuthResponse().id_token;
+
+  const authData = {
+    IdToken: idToken,
   };
-  console.log(response);
-};
 
- const responseGoogle = (response) => {
-  console.log("response>"+JSON.stringify(response));
- // history.push("/IngresoConfa");
-  console.log('responseGoogle :>> ', response);
-  var profile = response.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-  console.log(response);
-};
-
-const responseGoogleError = (error) => {
-
-  console.log("responseGoogleError>"+JSON.stringify(error));
-  history.push("/IngresoConfa");
-};
-
-  const onSubmit = (event) => {
-    
-    event.preventDefault();
-
-    const user = new CognitoUser({
-      Username: email,
-      Pool: UserPool,
-    });
-
-    const authDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
-    });
-
-    user.authenticateUser(authDetails, {
-      onSuccess: (data) => {
-
-        const accessToken = data.getAccessToken().getJwtToken();
-        const decodedToken = jwtDecode(accessToken);
-        console.log("accessToken :>> ", accessToken);
-        console.log("decodedToken :>> ", decodedToken);
-        console.log("decodedToken :>> ", decodedToken.sub);
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('userId', decodedToken.sub);
-        localStorage.setItem('tk', accessToken);
-
-
-       // setToken(accessToken);
-     //   setAuthenticated(true);
-        console.log("onSucess :>> ", data);
-       // console.log("tk :>> ", data.idToken.jwtToken);
-        localStorage.setItem("tk", data.idToken.jwtToken);
-        history.push("/IngresoConfa");
-      },
-      onFailure: (data) => {
-        setRespuestaLogin(" Incorrect username or password.");
-        console.log("onFailure :>> ", data);
-       
-      },
-      newPasswordRequired: (data) => {
-        console.log("newPasswordRequired :>> ", data);
-        setRespuestaLogin(" Incorrect username or password...");
-      },
-    });
+  const authDetails = new AuthenticationDetails(authData);
+  
+  const userData = {
+    Username: 'google-' + googleUser.getBasicProfile().getId(),
+    Pool: userPool,
   };
-  const userPool = new CognitoUserPool(poolData);
 
-  async function handleGoogleSignIn() {
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    const googleUser = await auth2.signIn();
-    const accessToken = googleUser.getAuthResponse().id_token;
-    console.log("googleUser :>> ", googleUser);
-      console.log("accessToken :>> ", accessToken);
+  const cognitoUser = new CognitoUser(userData);
 
-    const cognitoUser = new CognitoUser({
-      Username: googleUser.getBasicProfile().getEmail(),
-      Pool: userPool
-    });
-    console.log("cognitoUser :>> ", cognitoUser);
-
-
-    const authDetails = new AuthenticationDetails({
-      Username: googleUser.getBasicProfile().getEmail(),
-      Password: accessToken
-    });
-    cognitoUser.authenticateUser(authDetails, {
-      onSuccess: function (result) {
-        console.log('Usuario autenticado correctamente en AWS Cognito', result);
-      },
-      onFailure: function (err) {
-        console.error(err);
-      },
-      newPasswordRequired: function () {},
-      mfaRequired: function () {},
-      customChallenge: function () {}
-    });
-    history.push("/IngresoConfa");
-  }
-
-  return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={onSubmit}>
-        <br />
-        <label htmlFor="email">
-          Email
-          <input
-            type="textarea"
-            name="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="textarea"
-            name="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <input type="submit" name="Login" value="Login" />
-        <label><h1>{respuestaLogin}</h1></label>
-
-
-      </form>
-      <GoogleLogin
-        clientId="261980996205-nm2bsterdg3vqdp00qqaan8mho4tvl5t.apps.googleusercontent.com"
-        onSuccess={handleGoogleSignIn}
-        onFailure={handleGoogleSignIn}
-      />
-           
-
-
-    </div>
-  );
+  cognitoUser.authenticateUser(authDetails, {
+    onSuccess: (result) => {
+      console.log(result);
+      // Inicio de sesión con Cognito exitoso.
+    },
+    onFailure: (error) => {
+      console.log(error);
+    }
+  });
 };
+
+
+  const LoginG = () => {
+    const onSuccess = (googleUser) => {
+      console.log('onSuccess :>> ', onSuccess);
+      signInWithGoogle(googleUser);
+    };
+  
+    const onFailure = (error) => {
+      console.log(error);
+    };
+  
+    return (
+      <div>
+        <GoogleLogin
+          clientId="261980996205-nm2bsterdg3vqdp00qqaan8mho4tvl5t.apps.googleusercontent.com"
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+          cookiePolicy={'single_host_origin'}
+        />
+      </div>
+    );
+  };
 
 export default LoginG;
