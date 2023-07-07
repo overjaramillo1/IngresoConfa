@@ -38,5 +38,18 @@ export const SidebarData = [
     icon: <IoSettingsOutline />,
     cName: "nav-text"
   }
+  ,
+  {
+    title: "Listar",
+    path: "/ListarRegistros",
+    icon: <IoSettingsOutline />,
+    cName: "nav-text"
+  } ,
+  {
+    title: "IngresoConfaObj",
+    path: "/IngresoConfaObj",
+    icon: <IoSettingsOutline />,
+    cName: "nav-text"
+  }
   
 ];

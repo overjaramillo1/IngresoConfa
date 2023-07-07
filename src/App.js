@@ -9,6 +9,9 @@ import Login from './pages/Login';
 import IngresoConfa from "./pages/IngresoConfa";
 import CargarArchivo from "./pages/CargarArchivo";
 import LoginG from './pages/LoginG';
+import ListarRegistros from './pages/ListarRegistros';
+import IngresoConfaObj from './pages/IngresoConfaObj';
+
 
 
      //  <Route path="/IngresoConfa" component={IngresoConfa}   />
@@ -22,6 +25,10 @@ export default function App() {
         <Route path="/" exact component={Login} />
          <Route path="/signup"  component={Signup} />
          <Route path="/CargarArchivo" component={CargarArchivo} />
+         <Route path="/IngresoConfaObj" component={IngresoConfaObj} />
+         
+         <Route path="/ListarRegistros" component={ListarRegistros} />
+         ListarRegistros
           <ProtectedRoute path="/IngresoConfa" component={IngresoConfa} />
           <Route path="/LoginG" component={LoginG} />
           

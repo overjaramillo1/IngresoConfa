@@ -165,7 +165,7 @@ export default function Validacion() {
     <div className="validacion">
       <Card>
         <CardContent>
-          <h4>Registro Ingreso-Validación Facial</h4>
+          <h4>Registro Ingreso-Validación Facial oija</h4>
           <Webcam
             className="cam"
             audio={false}

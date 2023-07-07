@@ -6,13 +6,14 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = !!localStorage.getItem('accessToken');
 
 
-
+console.log('isAuthenticated :>> protec>> ', isAuthenticated);
   if (!isAuthenticated) {
+    console.log('isAuthenticated :>> ingreso>> ', isAuthenticated);
     // Mostrar mensaje si el token no está presente
     return <div>Debe iniciar sesión para acceder a esta página.</div>;
   } else {
    // const decodedToken = jwt.decode(isAuthenticated);
-
+   console.log('isAuthenticated :>> muestr>> ', isAuthenticated);
 
     return (
       <Route
